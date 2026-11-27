@@ -1,7 +1,9 @@
 
 (function (global) {
     "use strict";
-window.PingasConfig.ImageGen = [];
+if (!window.PingasConfig) {
+    window.PingasConfig = [];
+}
     class PingasGPTImageGenerator {
         constructor() {
             this.name = "PingasGPT Image Generator";

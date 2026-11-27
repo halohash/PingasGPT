@@ -1,5 +1,6 @@
+"use strict";
 window.addEventListener("load",()=>{
-    "use strict";
+
 
 const $ = id => document.getElementById(id);
 
