@@ -686,18 +686,3 @@
     global.PingasGPT = new PingasGPTEngine();
 
 })(globalThis);
-
-PingasGPT.train(`
-    A computer is an electronic machine.
-    JavaScript is a programming language.
-    Neural networks learn patterns from data.
-    Language models process words and sentences.
-    The Nexus S is a smartphone co-developed by Google and Samsung and manufactured by Samsung Electronics for release in 2010. It was the first smartphone to use the Android 2.3 "Gingerbread" operating system, and the first Android device to support Near Field Communication (NFC) in both hardware and software. The Nexus S is the first commercial smartphone certified by NASA to fly on the space shuttle and to be used on the International Space Station, as part of the SPHERES experiment.
-    Android Jelly Bean (Android 4.1, 4.2, 4.3) is the codename for the tenth version of the Android mobile operating system developed by Google, spanning three major point releases (versions 4.1 through 4.3.1). Among the devices that were launched with Android 4.1 to 4.3 already installed are the Nexus 7 (2012), Nexus 4, Nexus 10, and Nexus 7 (2013).
-    Google Play (previously styled Google play) originated from three distinct products: Android Market, Google Music, and Google Books (formerly Google eBookstore).
-    Android Market was announced by Google on August 28, 2008, and was made available to users on October 22. December 2010, content filtering was added to Android Market, each app's details page started showing a promotional graphic at the top, and the maximum size of an app was raised from 25 megabytes to 50 megabytes.
-`);
-
-console.log(await PingasGPT.ask(
-    "What is JavaScript?"
-));
