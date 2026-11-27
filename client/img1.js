@@ -73,7 +73,7 @@ $("generateButton").addEventListener("click", () => {
     $("generationStatus").textContent = "Generating...";
 
     try {
-        PingasGPTImages.config.imageGenerationEnabled = true;
+        window.PingasConfig.ImageGen.imageGenerationEnabled = true;
 
         const result = PingasGPTImages.generateImage(prompt);
 
@@ -137,7 +137,7 @@ $("learnButton").addEventListener("click", async () => {
 });
 
 $("generationEnabled").addEventListener("change", () => {
-    PingasGPTImages.config.imageGenerationEnabled =
+    window.PingasConfig.ImageGen.imageGenerationEnabled =
         $("generationEnabled").checked;
 
     $("generationStatus").textContent =
