@@ -7,6 +7,7 @@
 <title>PingasGPT</title>
 
 <style>
+@import url("https://hashpie.pages.dev/misc/classicroboto/style.css");
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,14 +15,16 @@
 }
 
 :root {
-    color-scheme: dark;
-    --background: #101419;
-    --surface: #191f26;
-    --surface2: #222a33;
-    --border: #303b46;
-    --accent: #35b7b0;
-    --text: #e8eeee;
-    --muted: #89969f;
+    color-scheme: light;
+    --background: #f4f6f8;
+    --surface: #ffffff;
+    --surface2: #e9edf1;
+    --border: #cfd7df;
+    --accent: #1d9a93;
+    --text: #111717;
+    --muted: #5a6772;
+    --header: background-image: linear-gradient(to bottom, #f5f5f5 0%, #dcdcdc 100%);
+    font-family: "Classic Roboto Condensed Regular", system-ui, Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -30,7 +33,6 @@ body {
     overflow: hidden;
     background: var(--background);
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
 }
@@ -43,7 +45,7 @@ header {
     justify-content: space-between;
     padding: 0 20px;
     border-bottom: 1px solid var(--border);
-    background: var(--surface);
+    background: var(--header);
 }
 
 .brand {
@@ -414,7 +416,11 @@ footer {
 
         const avatar = document.createElement("div");
         avatar.className = "avatar";
-        avatar.textContent = role === "user" ? "U" : "P";
+        avatar.textContent = role === "user" ? " " : "P";
+        if (role === "user") {
+            avatar.style.backgroundImage = "/profile.png";
+            avatar.style.backgroundSize = "100% 100%";
+        }
 
         const content = document.createElement("div");
         content.className = "content";
