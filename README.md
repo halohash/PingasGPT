@@ -1,0 +1,2 @@
+# PingasGPT
+tea bo.
