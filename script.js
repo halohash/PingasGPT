@@ -1,6 +1,6 @@
 (function (global) {
     "use strict";
-
+window.PingasConfig = {}
     class PingasGPTEngine {
         constructor() {
             this.name = "PingasGPT";
@@ -48,7 +48,7 @@
         
         async load() {
             try {
-                const response = await fetch(window.gptprompt || "https://pingasgpt.pages.dev/prompt.txt", {
+                const response = await fetch(window.PingasConfig.prompturl || "https://pingasgpt.pages.dev/prompt.txt", {
                     cache: "no-cache"
                 });
 

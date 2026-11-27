@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-window.gptprompt = "https://pingasgpt.pages.dev/prompt.txt";
+window.PingasConfig.prompturl = window.localStorage.getItem("gptprompt") || "https://pingasgpt.pages.dev/prompt.txt";
     const $ = id => document.getElementById(id);
 
     const chat = $("chat");
@@ -149,6 +149,65 @@ window.gptprompt = "https://pingasgpt.pages.dev/prompt.txt";
         try {
             
             await new Promise(resolve => setTimeout(resolve, 30));
+
+// Remember an image.
+const rememberMatch = text.match(
+    /^remember\s+(https?:\/\/\S+|\/\S+)$/i
+);
+
+if (rememberMatch) {
+    const url = rememberMatch[1];
+
+    addMessage("assistant", "learning image...");
+
+    const result = await learnImage(url);
+
+    if (result.success) {
+        addMessage(
+            "assistant",
+            "yes, i remembered the image."
+        );
+    } else {
+        addMessage(
+            "assistant",
+            "no, cors issue or not ok"
+        );
+    }
+
+    return;
+}
+
+// Generate an image.
+const drawMatch = text.match(
+    /^(?:generate|draw|create)\s+(?:an?\s+)?image\s*(.*)$/i
+);
+
+if (drawMatch) {
+    const prompt = drawMatch[1];
+
+    const result = await PingasGPTImages.generateImage(prompt);
+
+    if (typeof result === "string" && result.startsWith("no,")) {
+        addMessage("assistant", result);
+        return;
+    }
+
+    addMessage("assistant", "here's your image:");
+
+    const img = document.createElement("img");
+    img.src = result;
+    img.alt = prompt;
+    img.style.width = "100%";
+    img.style.maxWidth = "500px";
+    img.style.borderRadius = "12px";
+
+    const container = document.createElement("div");
+    container.appendChild(img);
+
+    messages.appendChild(container);
+
+    return;
+}
 
             const response = await PingasGPT.ask(text);
 
