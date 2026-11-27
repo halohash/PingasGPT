@@ -48,13 +48,13 @@
         
         async load() {
             try {
-                const response = await fetch("https://pingasgpt.pages.dev/prompt.txt", {
+                const response = await fetch(window.gptprompt || "https://pingasgpt.pages.dev/prompt.txt", {
                     cache: "no-cache"
                 });
 
                 if (!response.ok) {
                     throw new Error(
-                        "Could not load /prompt.txt: " + response.status
+                        "Could not load prompt url: " + response.status
                     );
                 }
 

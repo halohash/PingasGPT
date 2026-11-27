@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-
+window.gptprompt = "https://pingasgpt.pages.dev/prompt.txt";
     const $ = id => document.getElementById(id);
 
     const chat = $("chat");
