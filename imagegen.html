@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PingasGPT Image Studio</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #101419;
+    color: #f1f3f5;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+    background: #1b222a;
+    border-bottom: 1px solid #303a44;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.logo {
+    width: 36px;
+    height: 36px;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.status {
+    color: #8babb9;
+    font-size: 12px;
+}
+
+main {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px;
+}
+
+h2 {
+    font-size: 19px;
+    margin-top: 0;
+}
+
+.panel {
+    background: #1b222a;
+    border: 1px solid #303a44;
+    border-radius: 13px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+textarea,
+input {
+    width: 100%;
+    background: #101419;
+    color: white;
+    border: 1px solid #3b4652;
+    border-radius: 8px;
+    padding: 13px;
+    outline: none;
+    font: inherit;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 85px;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #42b9c4;
+}
+
+button {
+    background: #258d9b;
+    color: white;
+    border: 0;
+    padding: 11px 17px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #31aaba;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+    align-items: center;
+}
+
+.preview {
+    margin-top: 18px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #101419;
+    border: 1px dashed #3b4652;
+    border-radius: 10px;
+    padding: 12px;
+    overflow: hidden;
+}
+
+.preview img {
+    max-width: 100%;
+    max-height: 600px;
+    border-radius: 8px;
+}
+
+.empty {
+    color: #788692;
+    text-align: center;
+    padding: 25px;
+}
+
+.message {
+    font-size: 13px;
+    color: #9caeb9;
+    margin-top: 12px;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.gallery-item {
+    background: #101419;
+    border: 1px solid #303a44;
+    border-radius: 9px;
+    padding: 8px;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    background: #080b0e;
+    border-radius: 6px;
+}
+
+.gallery-item p {
+    font-size: 11px;
+    color: #9caeb9;
+    overflow-wrap: anywhere;
+}
+
+.gallery-item button {
+    width: 100%;
+    padding: 8px;
+    font-size: 11px;
+}
+
+.setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.setting input {
+    width: auto;
+    accent-color: #258d9b;
+}
+
+@media (max-width: 600px) {
+    main {
+        padding: 14px;
+    }
+
+    header {
+        padding: 0 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="brand">
+        <div class="logo">
+            <img src="/pingasgpt.png" alt="PingasGPT">
+        </div>
+        PingasGPT Image Studio
+    </div>
+
+    <div class="status" id="status">Initializing...</div>
+</header>
+
+<main>
+
+    <section class="panel">
+        <h2>Generate an image</h2>
+
+        <textarea
+            id="prompt"
+            placeholder="Describe an image..."
+        ></textarea>
+
+        <div class="controls">
+            <button id="generateButton">Generate image</button>
+            <button id="downloadButton" disabled>Download image</button>
+        </div>
+
+        <div class="preview" id="preview">
+            <div class="empty">Your generated image will appear here.</div>
+        </div>
+
+        <div class="message" id="generationStatus"></div>
+    </section>
+
+    <section class="panel">
+        <h2>Learn an image</h2>
+
+        <input
+            id="imageURL"
+            type="url"
+            placeholder="https://example.com/image.png"
+        >
+
+        <div class="controls">
+            <button id="learnButton">Remember image</button>
+        </div>
+
+        <div class="message" id="learningStatus"></div>
+    </section>
+
+    <section class="panel">
+        <h2>Remembered images</h2>
+
+        <div class="message" id="imageCount">
+            No images remembered.
+        </div>
+
+        <div class="gallery" id="gallery"></div>
+    </section>
+
+    <section class="panel">
+        <h2>Settings</h2>
+
+        <div class="setting">
+            <div>
+                **Image generation enabled**
+                <div class="message">
+                    Disable this to prevent PingasGPT from drawing.
+                </div>
+            </div>
+
+            <input type="checkbox" id="generationEnabled" checked>
+        </div>
+    </section>
+
+</main>
+
+<script src="/script-imagegen.js"></script>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+let generatedImage = null;
+
+function updateStatus() {
+    $("status").textContent = "Image engine ready";
+}
+
+function renderGallery() {
+    const gallery = $("gallery");
+
+    gallery.replaceChildren();
+
+    const images = [...PingasGPTImages.learnedImages.values()];
+
+    $("imageCount").textContent =
+        images.length + " remembered image(s)";
+
+    for (const item of images) {
+        const card = document.createElement("div");
+        card.className = "gallery-item";
+
+        const img = document.createElement("img");
+        img.src = item.data;
+        img.alt = "Remembered image";
+
+        const info = document.createElement("p");
+        info.textContent =
+            item.analysis.width + " × " +
+            item.analysis.height;
+
+        const button = document.createElement("button");
+        button.textContent = "View image";
+
+        button.onclick = () => {
+            $("preview").replaceChildren();
+
+            const preview = document.createElement("img");
+            preview.src = item.data;
+            preview.alt = "Remembered image";
+
+            $("preview").appendChild(preview);
+
+            generatedImage = item.data;
+            $("downloadButton").disabled = false;
+        };
+
+        card.append(img, info, button);
+        gallery.appendChild(card);
+    }
+}
+
+$("generateButton").addEventListener("click", () => {
+    const prompt = $("prompt").value.trim();
+
+    if (!prompt) {
+        $("generationStatus").textContent =
+            "Please enter an image prompt.";
+        return;
+    }
+
+    if (!$("generationEnabled").checked) {
+        $("generationStatus").textContent =
+            "no, me can't draw.";
+        return;
+    }
+
+    $("generateButton").disabled = true;
+    $("generationStatus").textContent = "Generating...";
+
+    try {
+        PingasGPTImages.config.imageGenerationEnabled = true;
+
+        const result = PingasGPTImages.generateImage(prompt);
+
+        if (typeof result !== "string" ||
+            !result.startsWith("data:image/")) {
+            throw new Error("Image generation failed.");
+        }
+
+        generatedImage = result;
+
+        const img = document.createElement("img");
+        img.src = result;
+        img.alt = prompt;
+
+        $("preview").replaceChildren(img);
+        $("downloadButton").disabled = false;
+
+        $("generationStatus").textContent =
+            "Image generated successfully.";
+    } catch (error) {
+        $("generationStatus").textContent =
+            error.message || "Image generation failed.";
+    }
+
+    $("generateButton").disabled = false;
+});
+
+$("downloadButton").addEventListener("click", () => {
+    if (!generatedImage) return;
+
+    const link = document.createElement("a");
+    link.href = generatedImage;
+    link.download = "pingasgpt-image.png";
+    link.click();
+});
+
+$("learnButton").addEventListener("click", async () => {
+    const url = $("imageURL").value.trim();
+
+    if (!url) {
+        $("learningStatus").textContent =
+            "Please enter an image URL.";
+        return;
+    }
+
+    $("learnButton").disabled = true;
+    $("learningStatus").textContent = "Learning image...";
+
+    const result = await PingasGPTImages.learnImage(url);
+
+    if (result.success) {
+        $("learningStatus").textContent =
+            "yes, i remembered the image.";
+        renderGallery();
+    } else {
+        $("learningStatus").textContent =
+            "no, cors issue or not ok";
+    }
+
+    $("learnButton").disabled = false;
+});
+
+$("generationEnabled").addEventListener("change", () => {
+    PingasGPTImages.config.imageGenerationEnabled =
+        $("generationEnabled").checked;
+
+    $("generationStatus").textContent =
+        $("generationEnabled").checked
+            ? "Image generation enabled."
+            : "no, me can't draw.";
+});
+
+updateStatus();
+renderGallery();
+</script>
+
+</body>
+</html>
