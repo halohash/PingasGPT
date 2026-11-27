@@ -194,17 +194,20 @@ if (drawMatch) {
 
     addMessage("assistant", "here's your image:");
 
-    const img = document.createElement("img");
-    img.src = result;
-    img.alt = prompt;
-    img.style.width = "100%";
-    img.style.maxWidth = "500px";
-    img.style.borderRadius = "12px";
-
     const container = document.createElement("div");
-    container.appendChild(img);
+container.className = "message assistant";
 
-    messages.appendChild(container);
+const img = document.createElement("img");
+img.src = result;
+img.alt = prompt;
+img.style.width = "100%";
+img.style.maxWidth = "500px";
+img.style.borderRadius = "12px";
+img.style.display = "block";
+
+container.appendChild(img);
+
+document.getElementById("chat").appendChild(container);
 
     return;
 }
