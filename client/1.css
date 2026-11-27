@@ -149,7 +149,8 @@ main {
 }
 
 .user .avatar {
-    background: #315c66;
+    background: url(/profile.png);
+    background-size: 100% 100%;
     color: white;
 }
 
@@ -180,8 +181,8 @@ main {
 }
 
 .user .bubble {
-    background: #20454b;
-    border-color: #32636a;
+    background: var(--surface);
+    border-color: 1px solid var(--border);
     border-radius: 14px 4px 14px 14px;
 }
 
@@ -259,7 +260,7 @@ footer {
 }
 
 #sendButton {
-    width: 42px;
+    min-width: 42px;
     height: 42px;
     
     border-radius: 2px;
@@ -268,7 +269,7 @@ footer {
     
     background: linear-gradient(to bottom, #F5F5F5 0%, #E0E0E0 100%);
     color: #333333;
-    font-family: "Roboto", "Droid Sans", sans-serif;
+    font-family: "Classic Roboto Regular", "Droid Sans", sans-serif;
     font-size: 20px;
     font-weight: normal;
     cursor: pointer;
