@@ -1,2 +1,2 @@
 # PingasGPT
-tea bo.
+nothing much, set preset words in prompt.txt
