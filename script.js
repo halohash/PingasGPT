@@ -44,7 +44,26 @@ window.PingasConfig = {}
                 temperature: 0.8
             };
         }
+removeRepeatedStart(text, query) {
+    text = String(text || "").trim();
+    query = String(query || "").trim();
 
+    if (!text || !query) return text;
+
+    const escapeRegex = str =>
+        str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const pattern = new RegExp(
+        "^" + escapeRegex(query) + "\\s+",
+        "i"
+    );
+
+    while (pattern.test(text)) {
+        text = text.replace(pattern, "");
+    }
+
+    return text.trim();
+}
         
         async load() {
             try {
@@ -505,20 +524,27 @@ window.PingasConfig = {}
             
             const tokens = response.split(/\s+/);
 
+            if (window.PingasConfig.debug === true) {
+                console.log("Seed: " + seedText);
+                console.log("Original Token Length: " + tokens.length);
+            }
+            
             if (tokens.length > 120) {
                 response = tokens.slice(0, 120).join(" ");
             }
 
-            
-            response = response.trim();
 
-            if (response) {
-                response =
-                    response.charAt(0).toUpperCase() +
-                    response.slice(1);
-            }
+response = response.trim();
 
-            return response;
+response = this.removeRepeatedStart(response, query);
+
+if (response) {
+    response =
+        response.charAt(0).toUpperCase() +
+        response.slice(1);
+}
+
+return response;
         }
 
         
